@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Gardening System Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .dashboard { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+        h2 { color: #4CAF50; }
+        .btn { display: inline-block; padding: 10px 20px; background: #4CAF50; color: white; border-radius: 5px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Smart Gardening System Dashboard</h1>
+    <div class="dashboard">
+        <div class="card">
+            <h2>Real-Time Data</h2>
+            <p>Soil Moisture: <span id="moisture">45%</span></p>
+            <p>Temperature: <span id="temperature">20°C</span></p>
+            <p>UV Index: <span id="uvIndex">5</span></p>
+        </div>
+        <div class="card">
+            <h2>Historical Data</h2>
+            <p>A graph here (placeholder)</p>
+        </div>
+        <div class="card">
+            <h2>Manual Controls</h2>
+            <a href="#" class="btn" id="waterPump">Activate Water Pump</a>
+        </div>
+        <div class="card">
+            <h2>System Alerts</h2>
+            <p>No alerts currently.</p>
+        </div>
+    </div>
+    <script>
+        // Example: Simulating data update. Replace with actual data fetching logic.
+        function updateData() {
+            document.getElementById('moisture').textContent = Math.floor(Math.random() * 100) + '%';
+            document.getElementById('temperature').textContent = Math.floor(Math.random() * 35) + '°C';
+            document.getElementById('uvIndex').textContent = Math.floor(Math.random() * 11);
+        }
+        setInterval(updateData, 5000); // Update data every 5 seconds
+    </script>
+</body>
+</html>
