@@ -1,0 +1,1 @@
+nmap -6 -sS -p1-65535 -T2 --version-intensity 9 --script=default,vuln --max-retries 1 --max-scan-delay 100ms --min-rate 10 --mtu 24 --spoof-mac 0 <IPv6-target>
