@@ -1,0 +1,26 @@
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{automata, positioning}
+
+\begin{document}
+
+\begin{tikzpicture}[node distance=3cm,>=stealth',auto]
+  % Nodes
+  \node[state, initial] (q0) {$q_0$};
+  \node[state, right of=q0] (q1) {$q_1$};
+  \node[state, accepting, right of=q1] (qaccept) {$q_{accept}$};
+  \node[state, accepting, below of=q1] (qreject) {$q_{reject}$};
+  \node[state, right of=qreject] (q2) {$q_2$};
+  
+  % Transition labels
+  \path[->]
+    (q0) edge[loop above] node {$a/X,R$} ()
+    (q0) edge node {$b/b,R$} (q1)
+    (q1) edge[loop above] node {$b/X,R$} ()
+    (q1) edge node {$a/a,S$} (qreject)
+    (q1) edge node {$\square/\square,R$} (q2)
+    (q2) edge[loop above] node {$X/X,R$} ()
+    (q2) edge node {$\square/\square,S$} (qaccept);
+\end{tikzpicture}
+
+\end{document}
