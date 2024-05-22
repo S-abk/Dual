@@ -5,17 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; color: #333; }
-        header { background: #007BFF; padding: 20px; color: white; text-align: center; }
-        section { padding: 20px; margin: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        canvas { display: block; width: 100%; max-width: 800px; height: 400px; margin: 20px auto; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background: #007BFF;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        form {
+            max-width: 800px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+        input[type="text"], button {
+            padding: 10px;
+            margin: 0 5px;
+            border: 2px solid #007BFF;
+            border-radius: 5px;
+        }
+        button {
+            background: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        section {
+            padding: 20px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 80%;
+            max-width: 800px;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            height: 400px;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>Weather Dashboard for {{ city }}</h1>
     </header>
+    <form action="/" method="get">
+        <input type="text" name="city" placeholder="Enter city name" value="{{ city }}">
+        <button type="submit">Check Weather</button>
+    </form>
+    {% if forecast %}
     <section>
         <canvas id="tempChart"></canvas>
     </section>
@@ -26,80 +77,52 @@
         <canvas id="windSpeedChart"></canvas>
     </section>
     <script>
-        var forecast = {{ forecast | tojson }};
-        var labels = forecast.list.map(item => new Date(item.dt_txt).toLocaleString());
+        var forecastData = {{ forecast | tojson | safe }};
+        var labels = forecastData.list.map(item => new Date(item.dt_txt).toLocaleString());
 
-        var tempChart = new Chart(document.getElementById('tempChart').getContext('2d'), {
+        new Chart(document.getElementById('tempChart').getContext('2d'), {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
                     label: 'Temperature (°C)',
-                    data: forecast.list.map(item => item.main.temp),
+                    data: forecastData.list.map(item => item.main.temp),
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
                     fill: true
                 }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Temperature (°C)'
-                        }
-                    }]
-                }
             }
         });
 
-        var humidityChart = new Chart(document.getElementById('humidityChart').getContext('2d'), {
+        new Chart(document.getElementById('humidityChart').getContext('2d'), {
             type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{
                     label: 'Humidity (%)',
-                    data: forecast.list.map(item => item.main.humidity),
+                    data: forecastData.list.map(item => item.main.humidity),
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                    borderColor: 'rgb(54, 162, 235)',
-                    borderWidth: 1
+                    borderColor: 'rgb(54, 162, 235)'
                 }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Humidity (%)'
-                        }
-                    }]
-                }
             }
         });
 
-        var windSpeedChart = new Chart(document.getElementById('windSpeedChart').getContext('2d'), {
+        new Chart(document.getElementById('windSpeedChart').getContext('2d'), {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [{
                     label: 'Wind Speed (m/s)',
-                    data: forecast.list.map(item => item.wind.speed),
+                    data: forecastData.list.map(item => item.wind.speed),
                     borderColor: 'rgb(75, 192, 192)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     fill: true
                 }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Wind Speed (m/s)'
-                        }
-                    }]
-                }
             }
         });
     </script>
+    {% else %}
+    <p>Weather data is not available. Please check the city name and try again.</p>
+    {% endif %}
 </body>
 </html>
