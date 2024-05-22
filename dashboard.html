@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Interactive Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
         header { background: #007BFF; padding: 10px 20px; color: white; text-align: center; }
@@ -27,9 +28,19 @@
         <button type="submit">Update</button>
     </form>
     <section>
-        <h2>Weather in {{ weather['name'] }}</h2>
-        <p><img src="http://openweathermap.org/img/wn/{{ weather['weather'][0]['icon'] }}@2x.png" alt="{{ weather['weather'][0]['description'] }}"> {{ weather['main']['temp'] }} °C</p>
-        <p>Weather: {{ weather['weather'][0]['description'] }}</p>
+        <h2>Weather in {{ weather['city']['name'] }}</h2>
+        <p>Current: <img src="http://openweathermap.org/img/wn/{{ weather['list'][0]['weather'][0]['icon'] }}@2x.png" alt="weather icon"> {{ weather['list'][0]['main']['temp'] }} °C</p>
+        <div id="forecast">
+            <h3>3-Day Forecast</h3>
+            <ul>
+                {% for item in weather['list'][:24:8] %}
+                <li>
+                    {{ item['dt_txt'] }}: {{ item['main']['temp'] }} °C, Feels like {{ item['main']['feels_like'] }} °C,
+                    {{ item['weather'][0]['description'] }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </section>
     <section>
         <h2>News Headlines</h2>
@@ -39,11 +50,5 @@
             {% endfor %}
         </ul>
     </section>
-    <script>
-        // Simple JavaScript to refresh the page every 30 minutes to update the data
-        setTimeout(function(){
-            window.location.reload(1);
-        }, 1800000);
-    </script>
 </body>
 </html>
