@@ -10,7 +10,7 @@ WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 
 @app.route('/', methods=['GET'])
 def weather_dashboard():
-    city = request.args.get('city', 'London')
+    city = request.args.get('city', 'London')  # Default city is London
 
     # Fetch detailed forecast data
     forecast_url = f"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={WEATHER_API_KEY}&units=metric"
