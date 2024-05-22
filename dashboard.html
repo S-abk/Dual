@@ -3,45 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Dashboard</title>
+    <title>Weather Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
-        header { background: #007BFF; padding: 10px 20px; color: white; text-align: center; }
-        section { margin: 20px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        canvas { width: 100%; max-width: 600px; margin: 20px auto; }
+        body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; color: #333; }
+        header { background: #007BFF; padding: 20px; color: white; text-align: center; }
+        section { padding: 20px; margin: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        canvas { display: block; width: 100%; max-width: 800px; height: 400px; margin: 20px auto; }
     </style>
 </head>
 <body>
     <header>
-        <h1>Interactive Dashboard</h1>
+        <h1>Weather Dashboard for {{ city }}</h1>
     </header>
-    <form action="/" method="get">
-        <input type="text" name="city" placeholder="Enter city" value="{{ request.args.get('city', 'London') }}">
-        <input type="text" name="country" placeholder="Enter country code" value="{{ request.args.get('country', 'us') }}">
-        <button type="submit">Update</button>
-    </form>
     <section>
-        <canvas id="weatherChart"></canvas>
+        <canvas id="tempChart"></canvas>
+    </section>
+    <section>
+        <canvas id="humidityChart"></canvas>
+    </section>
+    <section>
+        <canvas id="windSpeedChart"></canvas>
     </section>
     <script>
-        var ctx = document.getElementById('weatherChart').getContext('2d');
-        var weatherChart = new Chart(ctx, {
+        var forecast = {{ forecast | tojson }};
+        var labels = forecast.list.map(item => new Date(item.dt_txt).toLocaleString());
+
+        var tempChart = new Chart(document.getElementById('tempChart').getContext('2d'), {
             type: 'line',
             data: {
-                labels: {{ weather['list']|map(attribute='dt_txt')|list|tojson }},
+                labels: labels,
                 datasets: [{
                     label: 'Temperature (°C)',
-                    data: {{ weather['list']|map(attribute='main.temp')|list|tojson }},
-                    borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    data: forecast.list.map(item => item.main.temp),
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    fill: true
                 }]
             },
             options: {
                 scales: {
-                    y: {
-                        beginAtZero: false
-                    }
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Temperature (°C)'
+                        }
+                    }]
+                }
+            }
+        });
+
+        var humidityChart = new Chart(document.getElementById('humidityChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Humidity (%)',
+                    data: forecast.list.map(item => item.main.humidity),
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Humidity (%)'
+                        }
+                    }]
+                }
+            }
+        });
+
+        var windSpeedChart = new Chart(document.getElementById('windSpeedChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Wind Speed (m/s)',
+                    data: forecast.list.map(item => item.wind.speed),
+                    borderColor: 'rgb(75, 192, 192)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Wind Speed (m/s)'
+                        }
+                    }]
                 }
             }
         });
