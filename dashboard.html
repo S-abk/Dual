@@ -10,17 +10,25 @@
         section { margin: 20px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         ul { padding: 0; }
         li { list-style: none; margin-bottom: 10px; }
-        a { text-decoration: none; color: #007BFF; }
+        a { text-decoration: none; color: #007BFF; font-size: 16px; }
         a:hover { text-decoration: underline; }
+        form { margin-bottom: 20px; text-align: center; }
+        input, button { padding: 8px 15px; margin: 5px; }
+        img { vertical-align: middle; }
     </style>
 </head>
 <body>
     <header>
-        <h1>Dashboard</h1>
+        <h1>Interactive Dashboard</h1>
     </header>
+    <form action="/" method="get">
+        <input type="text" name="city" placeholder="Enter city" value="{{ request.args.get('city', 'London') }}">
+        <input type="text" name="country" placeholder="Enter country code" value="{{ request.args.get('country', 'us') }}">
+        <button type="submit">Update</button>
+    </form>
     <section>
         <h2>Weather in {{ weather['name'] }}</h2>
-        <p>Temperature: {{ weather['main']['temp'] }} °C</p>
+        <p><img src="http://openweathermap.org/img/wn/{{ weather['weather'][0]['icon'] }}@2x.png" alt="{{ weather['weather'][0]['description'] }}"> {{ weather['main']['temp'] }} °C</p>
         <p>Weather: {{ weather['weather'][0]['description'] }}</p>
     </section>
     <section>
