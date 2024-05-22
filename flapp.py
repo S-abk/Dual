@@ -15,7 +15,6 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def dashboard():
-    # Default settings
     city = request.args.get('city', 'London')
     country = request.args.get('country', 'us')
 
@@ -27,9 +26,13 @@ def dashboard():
     # Fetch news data
     news_url = f'https://newsapi.org/v2/top-headlines?country={country}&apiKey={NEWS_API_KEY}'
     news_response = requests.get(news_url)
-    news_data = news_response.json().get('articles', [])
+    news_data = news_response.json()
 
-    return render_template('dashboard.html', weather=weather_data, news=news_data)
+    # Check for errors in news data retrieval
+    if news_response.status_code != 200 or 'articles' not in news_data:
+        news_data = {'articles': [{'title': 'News data not available for this country.', 'url': '#'}]}
+
+    return render_template('dashboard.html', weather=weather_data, news=news_data['articles'])
 
 if __name__ == '__main__':
     app.run(debug=True)
