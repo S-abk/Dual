@@ -4,18 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Dashboard</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
         header { background: #007BFF; padding: 10px 20px; color: white; text-align: center; }
         section { margin: 20px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        ul { padding: 0; }
-        li { list-style: none; margin-bottom: 10px; }
-        a { text-decoration: none; color: #007BFF; font-size: 16px; }
-        a:hover { text-decoration: underline; }
-        form { margin-bottom: 20px; text-align: center; }
-        input, button { padding: 8px 15px; margin: 5px; }
-        img { vertical-align: middle; }
+        canvas { width: 100%; max-width: 600px; margin: 20px auto; }
     </style>
 </head>
 <body>
@@ -28,27 +22,29 @@
         <button type="submit">Update</button>
     </form>
     <section>
-        <h2>Weather in {{ weather['city']['name'] }}</h2>
-        <p>Current: <img src="http://openweathermap.org/img/wn/{{ weather['list'][0]['weather'][0]['icon'] }}@2x.png" alt="weather icon"> {{ weather['list'][0]['main']['temp'] }} °C</p>
-        <div id="forecast">
-            <h3>3-Day Forecast</h3>
-            <ul>
-                {% for item in weather['list'][:24:8] %}
-                <li>
-                    {{ item['dt_txt'] }}: {{ item['main']['temp'] }} °C, Feels like {{ item['main']['feels_like'] }} °C,
-                    {{ item['weather'][0]['description'] }}
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+        <canvas id="weatherChart"></canvas>
     </section>
-    <section>
-        <h2>News Headlines</h2>
-        <ul>
-            {% for article in news %}
-            <li><a href="{{ article['url'] }}" target="_blank">{{ article['title'] }}</a></li>
-            {% endfor %}
-        </ul>
-    </section>
+    <script>
+        var ctx = document.getElementById('weatherChart').getContext('2d');
+        var weatherChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ weather['list']|map(attribute='dt_txt')|list|tojson }},
+                datasets: [{
+                    label: 'Temperature (°C)',
+                    data: {{ weather['list']|map(attribute='main.temp')|list|tojson }},
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
