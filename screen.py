@@ -1,8 +1,12 @@
 import pygame
 import random
+import logging
 
 # Initialize pygame
 pygame.init()
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
 
 # Set up the display
 infoObject = pygame.display.Info()
@@ -38,6 +42,7 @@ class Ball:
             self.dx = -self.dx
         if self.y - self.radius <= 0 or self.y + self.radius >= height:
             self.dy = -self.dy
+        logging.info(f"Ball position: ({self.x}, {self.y})")
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
