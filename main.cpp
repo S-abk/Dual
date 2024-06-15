@@ -54,8 +54,8 @@ void update(int value) {
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(1920, 1080);
     glutCreateWindow("OpenGL Screensaver");
+    glutFullScreen();
     glClearColor(0, 0, 0, 0);
     glutDisplayFunc(display);
     glutTimerFunc(0, update, 0);
