@@ -5,7 +5,9 @@ import random
 pygame.init()
 
 # Set up the display
-screen = pygame.display.set_mode((1920, 1080), pygame.FULLSCREEN)
+infoObject = pygame.display.Info()
+width, height = infoObject.current_w, infoObject.current_h
+screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Screen Saver Animation")
 
 # Define colors
@@ -14,6 +16,34 @@ WHITE = (255, 255, 255)
 
 # Set up the clock for a decent frame rate
 clock = pygame.time.Clock()
+
+# Ball class to represent each ball in the animation
+class Ball:
+    def __init__(self):
+        self.x = random.randint(50, width - 50)
+        self.y = random.randint(50, height - 50)
+        self.radius = random.randint(20, 50)
+        self.color = (
+            random.randint(0, 255),
+            random.randint(0, 255),
+            random.randint(0, 255)
+        )
+        self.dx = random.choice([-1, 1]) * random.uniform(2, 4)
+        self.dy = random.choice([-1, 1]) * random.uniform(2, 4)
+
+    def move(self):
+        self.x += self.dx
+        self.y += self.dy
+        if self.x - self.radius <= 0 or self.x + self.radius >= width:
+            self.dx = -self.dx
+        if self.y - self.radius <= 0 or self.y + self.radius >= height:
+            self.dy = -self.dy
+
+    def draw(self, screen):
+        pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
+
+# Create a list of balls
+balls = [Ball() for _ in range(10)]
 
 # Define the main loop
 running = True
@@ -28,7 +58,10 @@ while running:
     # Fill the screen with black
     screen.fill(BLACK)
 
-    # Add your animation code here
+    # Move and draw each ball
+    for ball in balls:
+        ball.move()
+        ball.draw(screen)
 
     # Update the display
     pygame.display.flip()
