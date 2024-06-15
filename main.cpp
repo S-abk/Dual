@@ -2,6 +2,8 @@
 #include <cmath>
 #include <cstdlib>
 
+int screenWidth, screenHeight;
+
 struct Ball {
     float x, y, dx, dy, radius;
     float r, g, b;
@@ -11,11 +13,11 @@ Ball balls[5];
 
 void initBalls() {
     for (int i = 0; i < 5; i++) {
-        balls[i].x = (float)rand() / RAND_MAX;
-        balls[i].y = (float)rand() / RAND_MAX;
-        balls[i].dx = ((float)rand() / RAND_MAX - 0.5f) * 0.02f;
-        balls[i].dy = ((float)rand() / RAND_MAX - 0.5f) * 0.02f;
-        balls[i].radius = 0.05f;
+        balls[i].x = (float)rand() / RAND_MAX * screenWidth;
+        balls[i].y = (float)rand() / RAND_MAX * screenHeight;
+        balls[i].dx = ((float)rand() / RAND_MAX - 0.5f) * 0.02f * screenWidth;
+        balls[i].dy = ((float)rand() / RAND_MAX - 0.5f) * 0.02f * screenHeight;
+        balls[i].radius = 0.05f * screenWidth;
         balls[i].r = (float)rand() / RAND_MAX;
         balls[i].g = (float)rand() / RAND_MAX;
         balls[i].b = (float)rand() / RAND_MAX;
@@ -44,11 +46,21 @@ void update(int value) {
     for (Ball& ball : balls) {
         ball.x += ball.dx;
         ball.y += ball.dy;
-        if (ball.x < ball.radius || ball.x > 1 - ball.radius) ball.dx = -ball.dx;
-        if (ball.y < ball.radius || ball.y > 1 - ball.radius) ball.dy = -ball.dy;
+        if (ball.x < ball.radius || ball.x > screenWidth - ball.radius) ball.dx = -ball.dx;
+        if (ball.y < ball.radius || ball.y > screenHeight - ball.radius) ball.dy = -ball.dy;
     }
     glutPostRedisplay();
     glutTimerFunc(16, update, 0);
+}
+
+void reshape(int width, int height) {
+    screenWidth = width;
+    screenHeight = height;
+    glViewport(0, 0, screenWidth, screenHeight);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluOrtho2D(0.0, screenWidth, 0.0, screenHeight);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 int main(int argc, char** argv) {
@@ -56,8 +68,8 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutCreateWindow("OpenGL Screensaver");
     glutFullScreen();
-    glClearColor(0, 0, 0, 0);
     glutDisplayFunc(display);
+    glutReshapeFunc(reshape);
     glutTimerFunc(0, update, 0);
     initBalls();
     glutMainLoop();
