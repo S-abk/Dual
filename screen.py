@@ -1,12 +1,8 @@
 import pygame
 import random
-import logging
 
 # Initialize pygame
 pygame.init()
-
-# Set up logging
-logging.basicConfig(level=logging.INFO)
 
 # Set up the display in fullscreen mode
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN | pygame.NOFRAME)
@@ -15,7 +11,6 @@ pygame.display.set_caption("Screen Saver Animation")
 
 # Define colors
 BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
 
 # Set up the clock for a decent frame rate
 clock = pygame.time.Clock()
@@ -31,8 +26,8 @@ class Ball:
             random.randint(0, 255),
             random.randint(0, 255)
         )
-        self.dx = random.choice([-1, 1]) * random.uniform(2, 4)
-        self.dy = random.choice([-1, 1]) * random.uniform(2, 4)
+        self.dx = random.choice([-1, 1]) * random.uniform(1, 3)
+        self.dy = random.choice([-1, 1]) * random.uniform(1, 3)
 
     def move(self):
         self.x += self.dx
@@ -41,13 +36,12 @@ class Ball:
             self.dx = -self.dx
         if self.y - self.radius <= 0 or self.y + self.radius >= height:
             self.dy = -self.dy
-        logging.info(f"Ball position: ({self.x}, {self.y})")
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.x), int(self.y)), self.radius)
 
-# Create a list of balls
-balls = [Ball() for _ in range(10)]
+# Create a list of balls with reduced number for optimization
+balls = [Ball() for _ in range(5)]
 
 # Define the main loop
 running = True
@@ -70,8 +64,8 @@ while running:
     # Update the display
     pygame.display.flip()
 
-    # Cap the frame rate
-    clock.tick(30)
+    # Cap the frame rate to reduce CPU usage
+    clock.tick(15)
 
 # Quit pygame
 pygame.quit()
