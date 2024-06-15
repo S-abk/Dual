@@ -8,10 +8,9 @@ pygame.init()
 # Set up logging
 logging.basicConfig(level=logging.INFO)
 
-# Set up the display
-infoObject = pygame.display.Info()
-width, height = infoObject.current_w, infoObject.current_h
-screen = pygame.display.set_mode((width, height))
+# Set up the display in fullscreen mode
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN | pygame.NOFRAME)
+width, height = screen.get_size()
 pygame.display.set_caption("Screen Saver Animation")
 
 # Define colors
