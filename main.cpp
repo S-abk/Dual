@@ -21,24 +21,26 @@ void initBalls() {
     }
 }
 
+void drawBall(const Ball& ball) {
+    glColor3f(ball.r, ball.g, ball.b);
+    glBegin(GL_POLYGON);
+    for (int i = 0; i < 100; i++) {
+        float angle = 2.0f * 3.14159f * i / 100;
+        glVertex2f(ball.x + ball.radius * cos(angle), ball.y + ball.radius * sin(angle));
+    }
+    glEnd();
+}
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
-    for (int i = 0; i < 5; i++) {
-        Ball &ball = balls[i];
-        glColor3f(ball.r, ball.g, ball.b);
-        glBegin(GL_POLYGON);
-        for (int j = 0; j < 100; j++) {
-            float angle = 2.0f * 3.14159f * j / 100;
-            glVertex2f(ball.x + ball.radius * cos(angle), ball.y + ball.radius * sin(angle));
-        }
-        glEnd();
+    for (const Ball& ball : balls) {
+        drawBall(ball);
     }
     glutSwapBuffers();
 }
 
 void update(int value) {
-    for (int i = 0; i < 5; i++) {
-        Ball &ball = balls[i];
+    for (Ball& ball : balls) {
         ball.x += ball.dx;
         ball.y += ball.dy;
         if (ball.x < ball.radius || ball.x > 1 - ball.radius) ball.dx = -ball.dx;
@@ -51,7 +53,7 @@ void update(int value) {
 int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
-    glutInitWindowSize(800, 600);
+    glutInitWindowSize(1920, 1080);
     glutCreateWindow("OpenGL Screensaver");
     glClearColor(0, 0, 0, 0);
     glutDisplayFunc(display);
