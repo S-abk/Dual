@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Wallpaper</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        #wallpaper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="wallpaper"></canvas>
+    <script>
+        const canvas = document.getElementById('wallpaper');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Example animation: moving circles
+            const time = new Date().getTime() * 0.002;
+            for (let i = 0; i < 100; i++) {
+                const x = Math.sin(time + i * 0.5) * canvas.width * 0.5 + canvas.width * 0.5;
+                const y = Math.cos(time + i * 0.5) * canvas.height * 0.5 + canvas.height * 0.5;
+                ctx.beginPath();
+                ctx.arc(x, y, 10, 0, Math.PI * 2, false);
+                ctx.fillStyle = `hsl(${i * 3.6}, 100%, 50%)`;
+                ctx.fill();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
