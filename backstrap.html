@@ -1,51 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fullscreen Desktop</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" integrity="sha384-EozGDvSF126Jztqe9LJgGgFBzXcsBgGXLHgr5FfwXhv+QBP0aIn/RsEVdEO4zEtQ/" crossorigin="anonymous">
-  <style>
-    /* Set body to fullscreen height */
-    body {
-      height: 100vh;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Style content container */
-    .content {
-      text-align: center;
-      color: #fff;
-    }
-
-    /* Add some optional styling for a background image */
-    .bg-image {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: url('https://thatssotampa.com/wp-content/uploads/2023/09/FlamingoCover.png'); /* Add your background image URL here */
-      background-size: cover;
-      background-position: center;
-      filter: brightness(50%); /* Adjust brightness as needed */
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Wallpaper</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #282c34; /* Background color */
+        }
+        #content {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: white;
+            text-align: center;
+            font-size: 2rem;
+        }
+        .rotate {
+            display: inline-block;
+            animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-
-  <div class="bg-image"></div>
-
-  <div class="content container-fluid">
-    <h1>Welcome!</h1>
-    <p>This is a fullscreen desktop built with Bootstrap.</p>
-  </div>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ntchBTv95jxbsJW4nUPvMtLwzxyGtBRXfQO+y9mWtw7g9cL3sXTIXSXvZyqqRKGy" crossorigin="anonymous"></script>
+    <div id="particles-js"></div>
+    <div id="content">
+        <div class="rotate">Welcome to My Dynamic Wallpaper</div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 100 },
+                    size: { value: 3 },
+                    move: { speed: 1 },
+                    line_linked: { enable: true },
+                    color: { value: '#ffffff' }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
