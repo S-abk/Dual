@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neon Cyberpunk Wallpaper</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
         body, html {
             margin: 0;
@@ -13,7 +14,7 @@
             height: 100%;
             background: #0a0a0a; /* Dark background */
         }
-        #wallpaper {
+        #particles-js {
             position: fixed;
             top: 0;
             left: 0;
@@ -24,70 +25,118 @@
     </style>
 </head>
 <body>
-    <canvas id="wallpaper"></canvas>
+    <div id="particles-js"></div>
+    <div class="container text-center text-light">
+        <h1 class="mt-5">Neon Cyberpunk Wallpaper</h1>
+        <p class="lead">Enjoy the dynamic neon cyberpunk aesthetic!</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
     <script>
-        const canvas = document.getElementById('wallpaper');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        const colors = ['#ff073a', '#ff8c00', '#ffd700', '#00ff00', '#00ffff', '#1e90ff', '#9370db', '#ff00ff', '#00ff80'];
-        const lines = [];
-
-        function createLine() {
-            return {
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                length: Math.random() * 200 + 50,
-                speed: Math.random() * 3 + 1,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                angle: Math.random() * Math.PI * 2
-            };
-        }
-
-        for (let i = 0; i < 100; i++) {
-            lines.push(createLine());
-        }
-
-        function drawLine(line) {
-            ctx.save();
-            ctx.translate(line.x, line.y);
-            ctx.rotate(line.angle);
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = line.color;
-            ctx.beginPath();
-            ctx.moveTo(0, 0);
-            ctx.lineTo(line.length, 0);
-            ctx.strokeStyle = line.color;
-            ctx.lineWidth = 3;
-            ctx.stroke();
-            ctx.restore();
-        }
-
-        function animate() {
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            lines.forEach(line => {
-                drawLine(line);
-                line.x += Math.cos(line.angle) * line.speed;
-                line.y += Math.sin(line.angle) * line.speed;
-
-                if (line.x > canvas.width || line.x < 0 || line.y > canvas.height || line.y < 0) {
-                    line.x = Math.random() * canvas.width;
-                    line.y = Math.random() * canvas.height;
-                    line.angle = Math.random() * Math.PI * 2;
+        particlesJS("particles-js", {
+            "particles": {
+                "number": {
+                    "value": 80,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": ["#ff073a", "#ff8c00", "#ffd700", "#00ff00", "#00ffff", "#1e90ff", "#9370db", "#ff00ff", "#00ff80"]
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
+                },
+                "opacity": {
+                    "value": 0.5,
+                    "random": false,
+                    "anim": {
+                        "enable": false,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": false,
+                        "speed": 40,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#ffffff",
+                    "opacity": 0.4,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 6,
+                    "direction": "none",
+                    "random": false,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false,
+                    "attract": {
+                        "enable": false,
+                        "rotateX": 600,
+                        "rotateY": 1200
+                    }
                 }
-            });
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": true,
+                        "mode": "grab"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "grab": {
+                        "distance": 140,
+                        "line_linked": {
+                            "opacity": 1
+                        }
+                    },
+                    "bubble": {
+                        "distance": 400,
+                        "size": 40,
+                        "duration": 2,
+                        "opacity": 8,
+                        "speed": 3
+                    },
+                    "repulse": {
+                        "distance": 200,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    },
+                    "remove": {
+                        "particles_nb": 2
+                    }
+                }
+            },
+            "retina_detect": true
         });
     </script>
 </body>
