@@ -3,35 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neon Cyberpunk Wallpaper</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Particle.js Neon Cyberpunk Wallpaper</title>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <style>
         body, html {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             width: 100%;
             height: 100%;
-            background: #0a0a0a; /* Dark background */
+            background: #0d0d0d; /* Dark background for a cyberpunk feel */
+            overflow: hidden;
         }
         #particles-js {
-            position: fixed;
-            top: 0;
-            left: 0;
+            position: absolute;
             width: 100%;
             height: 100%;
-            z-index: -1;
         }
     </style>
 </head>
 <body>
     <div id="particles-js"></div>
-    <div class="container text-center text-light">
-        <h1 class="mt-5">Neon Cyberpunk Wallpaper</h1>
-        <p class="lead">Enjoy the dynamic neon cyberpunk aesthetic!</p>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
     <script>
         particlesJS("particles-js", {
             "particles": {
@@ -43,7 +34,7 @@
                     }
                 },
                 "color": {
-                    "value": ["#ff073a", "#ff8c00", "#ffd700", "#00ff00", "#00ffff", "#1e90ff", "#9370db", "#ff00ff", "#00ff80"]
+                    "value": "#ff007f" // Neon pink particles
                 },
                 "shape": {
                     "type": "circle",
@@ -53,7 +44,7 @@
                     },
                     "polygon": {
                         "nb_sides": 5
-                    }
+                    },
                 },
                 "opacity": {
                     "value": 0.5,
@@ -78,7 +69,7 @@
                 "line_linked": {
                     "enable": true,
                     "distance": 150,
-                    "color": "#ffffff",
+                    "color": "#ff007f", // Neon pink lines
                     "opacity": 0.4,
                     "width": 1
                 },
@@ -102,7 +93,7 @@
                 "events": {
                     "onhover": {
                         "enable": true,
-                        "mode": "grab"
+                        "mode": "repulse"
                     },
                     "onclick": {
                         "enable": true,
@@ -112,7 +103,7 @@
                 },
                 "modes": {
                     "grab": {
-                        "distance": 140,
+                        "distance": 400,
                         "line_linked": {
                             "opacity": 1
                         }
